@@ -8,6 +8,7 @@ environs==10.3.0
 exceptiongroup==1.2.0
 fastapi==0.109.0
 fastapi_cors==0.0.6
+gunicorn==21.2.0
 h11==0.14.0
 idna==3.6
 marshmallow==3.20.2
