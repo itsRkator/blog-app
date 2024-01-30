@@ -24,11 +24,14 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 connection_string = URL.create(
     "postgresql",
-    username="admin",
-    password="DxLK6N7HZCkd",
-    host="ep-quiet-leaf-a1olu2t3.ap-southeast-1.pg.koyeb.app",
+    username="koyeb-adm",
+    password="wQpqLvkP5n7X",
+    host="ep-noisy-dream-a24ovsvy.eu-central-1.pg.koyeb.app",
     database="koyebdb",
 )
+
+engine = create_engine(connection_string)
+
 
 engine = create_engine(connection_string)
 
