@@ -5,8 +5,8 @@ Certainly! Below is a step-by-step guide for setting up both the backend (FastAP
 #### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/itsRkator/blog-app.git
+cd blog-app
 ```
 
 
