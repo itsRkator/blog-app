@@ -49,7 +49,7 @@ app = FastAPI()
 
 database = Database(DATABASE_URL)
 
-origins = ["http://localhost", "http://locahost:3000"]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -98,13 +98,12 @@ async def get_post(id: int):
     return post
 
 
-@app.put("posts/{id}")
+@app.put("/posts/{id}")
 async def update_post(id: int, post: PostCreate):
     query = (
         posts.update().where(posts.c.id == id).values(title=post.title, body=post.body)
     )
-    updated_rows = database.execute(query)
-
+    updated_rows = await database.execute(query)
     if updated_rows == 0:
         raise HTTPException(status_code=404, detail="Post not found")
     return {"message": "Post updated successfully"}
@@ -120,4 +119,4 @@ async def delete_pose(id: int):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
