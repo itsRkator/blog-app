@@ -33,10 +33,12 @@ const CreatePost = () => {
     try {
       if (id) {
         await updatePost(id, blog);
-        navigate("/");
+        navigate(`/posts/${id}`);
       } else {
-        await createPost(blog);
-        navigate("/");
+        const apiResponse = await createPost(blog);
+        const data = apiResponse.data;
+        console.log(data);
+        navigate(`/posts/${data.id}`);
       }
     } catch (err) {
       handleError();
@@ -74,7 +76,9 @@ const CreatePost = () => {
             borderRadius: "5px",
           }}
         >
-          <h4 style={{ color: "red", textAlign: "center" }}>Error Occurred</h4>
+          <h4 style={{ color: "red", textAlign: "center" }}>
+            Error {id ? "updating" : "creating"} blog
+          </h4>
         </div>
       )}
       <Card sx={{ p: 5, m: 5, textAlign: "center" }}>

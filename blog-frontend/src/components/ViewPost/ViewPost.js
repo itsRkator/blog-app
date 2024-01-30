@@ -19,6 +19,7 @@ const ViewPost = () => {
     setError(true);
     setTimeout(() => {
       setError(false);
+      navigate("/");
     }, 10000);
   };
 
@@ -60,7 +61,7 @@ const ViewPost = () => {
             borderRadius: "5px",
           }}
         >
-          <h4 style={{ color: "red", textAlign: "center" }}>Error Occurred</h4>
+          <h4 style={{ color: "red", textAlign: "center" }}>Post not found!!</h4>
         </div>
       )}
       <div style={{ marginTop: "1rem" }}>
