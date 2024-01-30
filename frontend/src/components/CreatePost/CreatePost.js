@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createPost, updatePost, getPost } from "../../services/api";
 import { Box, TextField, Button, Card } from "@mui/material";
 
-const CreatePost = () => {
+const CreatePost = ({ setIsLoading }) => {
   const [blog, setBlog] = useState({
     title: "",
     body: "",
@@ -31,30 +31,36 @@ const CreatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       if (id) {
         await updatePost(id, blog);
         navigate(`/posts/${id}`);
+        setIsLoading(false);
       } else {
         const apiResponse = await createPost(blog);
         const data = apiResponse.data;
-        console.log(data);
         navigate(`/posts/${data.id}`);
+        setIsLoading(false);
       }
     } catch (err) {
       handleError();
-      console.log(err);
+      console.error(err);
     }
   };
 
   useEffect(() => {
+    setIsLoading(id ? true : false);
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const apiResponse = await getPost(id);
         const data = apiResponse.data;
         setBlog(data);
+        setIsLoading(false);
       } catch (err) {
         handleError();
-        console.log(err);
+        console.error(err);
+        setIsLoading(false);
       }
     };
     if (id) {

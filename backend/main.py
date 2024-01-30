@@ -1,5 +1,7 @@
-import uvicorn
 import os
+import uvicorn
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import (
@@ -10,6 +12,7 @@ from sqlalchemy import (
     MetaData,
     Table,
 )
+from sqlalchemy.engine import URL
 from sqlalchemy.orm import declarative_base
 from databases import Database
 from pydantic import BaseModel
@@ -19,9 +22,15 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL)
+connection_string = URL.create(
+    "postgresql",
+    username="admin",
+    password="DxLK6N7HZCkd",
+    host="ep-quiet-leaf-a1olu2t3.ap-southeast-1.pg.koyeb.app",
+    database="koyebdb",
+)
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(connection_string)
 
 metadata = MetaData()
 
@@ -73,6 +82,14 @@ async def shutdown_db_client():
 class PostCreate(BaseModel):
     title: str
     body: str
+
+
+app.mount("/static", StaticFiles(directory="../frontend/build/static"), name="static")
+
+
+@app.get("/")
+async def root():
+    return FileResponse("../frontend/build/index.html")
 
 
 @app.post("/posts")

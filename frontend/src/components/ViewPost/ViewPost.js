@@ -4,7 +4,7 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 import { getPost, deletePost } from "../../services/api";
 import { useNavigate, useParams } from "react-router-dom";
 
-const ViewPost = () => {
+const ViewPost = ({ setIsLoading }) => {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(false);
   const { id } = useParams();
@@ -24,24 +24,30 @@ const ViewPost = () => {
   };
 
   const handleDelete = async (id) => {
+    setIsLoading(true);
     try {
       await deletePost(id);
       navigate("/");
+      setIsLoading(false);
     } catch (error) {
       handleError();
-      console.log(error);
+      console.error(error);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
+        setIsLoading(true);
         const apiResponse = await getPost(id);
         const data = apiResponse.data;
         setPost(data);
+        setIsLoading(false);
       } catch (error) {
         handleError();
-        console.log(error);
+        console.error(error);
+        setIsLoading(false);
       }
     };
     fetchPost();
@@ -61,7 +67,9 @@ const ViewPost = () => {
             borderRadius: "5px",
           }}
         >
-          <h4 style={{ color: "red", textAlign: "center" }}>Post not found!!</h4>
+          <h4 style={{ color: "red", textAlign: "center" }}>
+            Post not found!!
+          </h4>
         </div>
       )}
       <div style={{ marginTop: "1rem" }}>

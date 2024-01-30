@@ -4,7 +4,7 @@ import { getPosts } from "../../services/api";
 import { Button, List, ListItem, ListItemText } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const ListPosts = () => {
+const ListPosts = ({ setIsLoading }) => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
 
@@ -18,11 +18,15 @@ const ListPosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setIsLoading(true);
         const response = await getPosts();
         const data = response.data;
         setPosts(data);
+        setIsLoading(false);
       } catch (error) {
+        console.error(error);
         handleError();
+        setIsLoading(false);
       }
     };
     fetchPosts();
@@ -45,37 +49,42 @@ const ListPosts = () => {
           <h4 style={{ color: "red", textAlign: "center" }}>Error Occurred</h4>
         </div>
       )}
-      <div
-        style={{
-          margin: "10px",
-          padding: "10px",
-          boxShadow: "#8694a4 0px 0px 5px 1px",
-          background: "#9c9c9c29",
-          borderRadius: "5px",
-        }}
-      >
-        <List sx={{ width: "100%"}}>
-          {posts.map((post) => (
-            <ListItem
-              key={post.id}
-              disableGutters
-              secondaryAction={
-                <Link to={`/posts/${post.id}`}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    aria-label="Read More"
-                  >
-                    Read More
-                  </Button>
-                </Link>
-              }
-            >
-              <ListItemText primary={post.title} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
+      {posts.length > 0 && (
+        <div
+          style={{
+            margin: "10px",
+            padding: "10px",
+            boxShadow: "#8694a4 0px 0px 5px 1px",
+            background: "#9c9c9c29",
+            borderRadius: "5px",
+          }}
+        >
+          <List sx={{ width: "100%" }}>
+            {posts.map((post) => (
+              <ListItem
+                key={post.id}
+                disableGutters
+                secondaryAction={
+                  <Link to={`/posts/${post.id}`}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      aria-label="Read More"
+                    >
+                      Read More
+                    </Button>
+                  </Link>
+                }
+              >
+                <ListItemText primary={post.title} />
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      )}
+      {posts.length === 0 && (
+        <h5 style={{ textAlign: "center" }}>No Posts Found</h5>
+      )}
     </>
   );
 };
