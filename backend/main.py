@@ -84,12 +84,12 @@ class PostCreate(BaseModel):
     body: str
 
 
-app.mount("/static", StaticFiles(directory="../frontend/build/static"), name="static")
+app.mount("/static", StaticFiles(directory="build/static"), name="static")
 
 
 @app.get("/")
 async def root():
-    return FileResponse("../frontend/build/index.html")
+    return FileResponse("build/index.html")
 
 
 @app.post("/posts")
