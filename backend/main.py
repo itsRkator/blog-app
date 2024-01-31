@@ -74,12 +74,12 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-async def startup_db_client():
+async def startup_event():
     await database.connect()
 
 
 @app.on_event("shutdown")
-async def shutdown_db_client():
+async def shutdown_event():
     await database.disconnect()
 
 
