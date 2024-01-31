@@ -1,8 +1,8 @@
-import os
+# import os
 import uvicorn
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import (
     create_engine,
@@ -20,7 +20,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+# DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = "postgres://koyeb-adm:wQpqLvkP5n7X@ep-noisy-dream-a24ovsvy.eu-central-1.pg.koyeb.app/koyebdb"
 
 connection_string = URL.create(
     "postgresql",
