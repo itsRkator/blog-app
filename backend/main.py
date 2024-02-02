@@ -96,20 +96,20 @@ async def root():
     return FileResponse("build/index.html")
 
 
-@app.post("/posts")
+@app.post("/api/posts")
 async def create_post(post: PostCreate):
     query = posts.insert().values(title=post.title, body=post.body)
     post_id = await database.execute(query)
     return {"id": post_id, "title": post.title, "body": post.body}
 
 
-@app.get("/posts")
+@app.get("/api/posts")
 async def get_posts():
     query = posts.select()
     return await database.fetch_all(query)
 
 
-@app.get("/posts/{id}")
+@app.get("/api/posts/{id}")
 async def get_post(id: int):
     query = posts.select().where(posts.c.id == id)
     post = await database.fetch_one(query)
@@ -119,7 +119,7 @@ async def get_post(id: int):
     return post
 
 
-@app.put("/posts/{id}")
+@app.put("/api/posts/{id}")
 async def update_post(id: int, post: PostCreate):
     query = (
         posts.update().where(posts.c.id == id).values(title=post.title, body=post.body)
@@ -130,7 +130,7 @@ async def update_post(id: int, post: PostCreate):
     return {"message": "Post updated successfully"}
 
 
-@app.delete("/posts/{id}")
+@app.delete("/api/posts/{id}")
 async def delete_pose(id: int):
     query = posts.delete().where(posts.c.id == id)
     deleted_rows = await database.execute(query)
